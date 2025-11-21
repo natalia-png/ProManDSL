@@ -300,7 +300,31 @@ java -cp bin Main ../src/proyecto1.proj
 
 ---
 
-# ■ 10. Créditos del proyecto
+# ■ 10. IDE web / Compilador interactivo (Python + Streamlit + Java)
+
+Además de las dos implementaciones “clásicas” (Java y Ohm-JS), el proyecto incluye un IDE web para ProManDSL desarrollado en Python + Streamlit, que funciona como una capa gráfica sobre el compilador de Java.
+
+Este IDE permite:
+
+Escribir o editar el acta en ProManDSL desde el navegador.
+
+Cargar archivos .proj desde el equipo.
+
+Enviar el código al compilador Java (JFlex + CUP).
+
+Visualizar el HTML generado embebido.
+
+Descargar el resultado como archivo .html.
+
+Ver mensajes de error cuando el DSL tiene problemas sintácticos o léxicos.
+
+<img width="1366" height="596" alt="image" src="https://github.com/user-attachments/assets/2db02142-7f7a-4859-8c53-438502dc83bd" />
+
+<img width="1355" height="598" alt="image" src="https://github.com/user-attachments/assets/74347c35-5a4f-4b8c-96bf-d6189399862c" />
+
+---
+
+# ■ 11. Créditos del proyecto
 
 Proyecto desarrollado por:  
 **Natalia Rubio**  
