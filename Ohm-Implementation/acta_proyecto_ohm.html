@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Acta (Ohm) - Acta_plataforma_HE_Arquitectos</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+    .page {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 18px 45px rgba(15,23,42,0.12);
+      padding: 32px 40px 40px 40px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4f46e5;
+      margin-bottom: 8px;
+    }
+    h1 {
+      font-size: 26px;
+      margin: 0 0 4px 0;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    .code-block {
+      margin-top: 20px;
+      background: #111827;
+      color: #e5e7eb;
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      line-height: 1.4;
+      white-space: pre;
+    }
+    footer {
+      margin-top: 28px;
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="pill">Acta (implementación Ohm)</div>
+    <h1>Acta_plataforma_HE_Arquitectos</h1>
+    <div class="subtitle">
+      Documento generado automáticamente desde el DSL usando <strong>ohm-js</strong>.
+      En esta vista se muestra el contenido original del acta.
+    </div>
+
+    <h2 style="font-size:16px;margin-top:18px;">Código DSL</h2>
+    <div class="code-block">metadata {
+    code        PRJ_001
+    version     v1_0
+    created_on  2025_11_20
+    prepared_by Juan_Pablo_Castaneda
+  }
+
+  client {
+    name    HE_Arquitectos
+    contact Arq_Natalia_Rubio
+    email   contacto@he-arq.com
+  }
+
+  context {
+    summary Plataforma_integral_para_gestionar_proyectos_arquitectonicos_en_tiempo_real.
+  }
+
+  objectives {
+    general  Mejorar_la_coordinacion_y_trazabilidad_de_los_proyectos_arquitectonicos.
+    specific Centralizar_la_informacion_de_proyectos.
+    specific Facilitar_la_comunicacion_entre_arquitectos_e_ingenieros.
+    specific Automatizar_generacion_de_reportes_y_actas.
+  }
+
+  scope {
+    include Gestion_de_fases_del_proyecto.
+    include Seguimiento_de_entregables_y_responsables.
+    include Registro_de_riesgos_y_planes_de_mitigacion.
+
+    exclude Gestion_contable_facturacion.
+    exclude Diseno_estructural_detallado.
+  }
+
+  schedule {
+    phase Levantamiento_requerimientos        start 2025_11_25 end 2025_12_10
+    phase Diseno_arquitectura_software        start 2025_12_11 end 2026_01_15
+    phase Desarrollo_MVP                      start 2026_01_16 end 2026_03_30
+    phase Pruebas_piloto_con_HE               start 2026_04_01 end 2026_04_30
+  }
+
+  team {
+    role Product_Owner      Arq_Natalia_Rubio
+    role Scrum_Master       Juan_Pablo_Castaneda
+    role Full_Stack_Dev     Est_Ing_Sistemas_A
+    role Full_Stack_Dev     Est_Ing_Sistemas_B
+  }
+
+  risks {
+    risk Sobrecarga_trabajo_academico                 level high   mitigation Planificar_sprints_y_priorizar_entregables_criticos.
+    risk Cambios_en_requerimientos_del_cliente        level medium mitigation Reuniones_quincenales_revision_y_ajuste_backlog.
+    risk Falta_de_adopcion_por_usuarios_finales       level medium mitigation Capacitaciones_y_manuales_claros_en_la_plataforma.
+  }
+
+  budget {
+    currency COP
+    item Infraestructura_nube_AWS                     cost 500000
+    item Herramientas_colaboracion_Jira_GitHub        cost 200000
+    item Capacitaciones_y_documentacion               cost 150000
+  }
+
+  status {
+    overall  En_planificacion_inicial.
+    health   En_verde_alcance_y_tiempos_bajo_control.
+    comments Pendiente_validacion_final_del_acta_con_HE_Arquitectos.
+  }
+
+  approvals {
+    required_by 2025_11_30
+    approver Gerente_HE_Arquitectos    Firma_pendiente
+    approver Director_Prog_Ing_Sistemas Revision_academica_pendiente
+  }
+}</div>
+
+    <footer>Implementación de referencia con Ohm-JS para la rúbrica del proyecto.</footer>
+  </div>
+</body>
+</html>

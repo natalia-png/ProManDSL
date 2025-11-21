@@ -1,0 +1,13 @@
+{
+  "name": "promandsl-ohm",
+  "version": "1.0.0",
+  "description": "Transpilador ProManDSL a HTML usando ohm-js",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "dependencies": {
+    "ohm-js": "^17.0.0"
+  }
+}

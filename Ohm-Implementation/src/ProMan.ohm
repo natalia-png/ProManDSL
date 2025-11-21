@@ -1,0 +1,14 @@
+ProMan {
+
+  Project =
+    _ "project" _ Ident _ "{" _ Body
+
+  Body =
+    any*
+
+  Ident =
+    (~space ~"\n" ~"{" any)+
+
+  _ =
+    space*
+}

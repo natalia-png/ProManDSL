@@ -1,0 +1,415 @@
+/* ============================================
+   ProManDSL - Parser (CUP)
+   Construye el AST para el acta de proyecto
+   ============================================ */
+
+package parser;
+
+import java_cup.runtime.*;
+import java.util.*;
+import ast.*;
+
+/* ========= TERMINALES (TOKENS DEL LEXER) ========= */
+
+/* Bloque raíz y secciones principales */
+terminal PROJECT, METADATA, CLIENT, CONTEXT, OBJECTIVES, SCOPE, SCHEDULE,
+         TEAM, RISKS, BUDGET, STATUS, APPROVALS;
+
+/* Metadata */
+terminal CODE, VERSION, CREATED_ON, PREPARED_BY;
+
+/* Client */
+terminal NAME, CONTACT, EMAIL;
+
+/* Context */
+terminal SUMMARY;
+
+/* Objectives */
+terminal GENERAL, SPECIFIC;
+
+/* Scope */
+terminal INCLUDE, EXCLUDE;
+
+/* Schedule */
+terminal PHASE, START, END;
+
+/* Team */
+terminal ROLE;
+
+/* Risks */
+terminal RISK, LEVEL, HIGH, MEDIUM, LOW, MITIGATION;
+
+/* Budget */
+terminal CURRENCY, ITEM, COST;
+
+/* Status */
+terminal OVERALL, HEALTH, COMMENTS;
+
+/* Approvals */
+terminal REQUIRED_BY, APPROVER;
+
+/* Estructura y literales */
+terminal LBRACE, RBRACE;
+terminal String STRING;
+terminal Integer NUMBER;
+
+/* ========= NO TERMINALES ========= */
+
+non terminal ProjectNode project;
+
+non terminal MetadataNode   metadata;
+non terminal ClientNode     client;
+non terminal ContextNode    context;
+non terminal ObjectivesNode objectives;
+non terminal ScopeNode      scope;
+non terminal ScheduleNode   schedule;
+non terminal TeamNode       team;
+non terminal RisksNode      risks;
+non terminal BudgetNode     budget;
+non terminal StatusNode     status;
+non terminal ApprovalsNode  approvals;
+
+/* Listas auxiliares */
+non terminal ArrayList<String>         specific_list;
+non terminal ArrayList<String>         include_list;
+non terminal ArrayList<String>         exclude_list;
+non terminal ArrayList<PhaseNode>      phase_list;
+non terminal ArrayList<RoleNode>       role_list;
+non terminal ArrayList<RiskNode>       risk_list;
+non terminal ArrayList<BudgetItemNode> budget_item_list;
+non terminal ArrayList<ApproverNode>   approver_list;
+
+/* Otros tipos */
+non terminal String risk_level;
+
+start with project;
+
+/* ========= RAÍZ DEL PROGRAMA ========= */
+
+project ::=
+    PROJECT
+    STRING:pname
+    LBRACE
+      metadata:m
+      client:c
+      context:ctx
+      objectives:obj
+      scope:scp
+      schedule:sch
+      team:t
+      risks:r
+      budget:b
+      status:st
+      approvals:ap
+    RBRACE
+    {:
+       RESULT = new ProjectNode(
+         pname, // nombre del proyecto
+         m,     // metadata
+         c,     // client
+         ctx,   // context
+         obj,   // objectives
+         scp,   // scope
+         sch,   // schedule
+         t,     // team
+         r,     // risks
+         b,     // budget
+         st,    // status
+         ap     // approvals
+       );
+     :}
+;
+
+/* ========= METADATA ========= */
+
+metadata ::=
+    METADATA
+    LBRACE
+      CODE       STRING:code
+      VERSION    STRING:version
+      CREATED_ON STRING:created
+      PREPARED_BY STRING:prepared
+    RBRACE
+    {:
+      RESULT = new MetadataNode(
+        code,
+        version,
+        created,
+        prepared
+      );
+    :}
+;
+
+/* ========= CLIENT ========= */
+
+client ::=
+    CLIENT
+    LBRACE
+      NAME    STRING:name
+      CONTACT STRING:contact
+      EMAIL   STRING:email
+    RBRACE
+    {:
+      RESULT = new ClientNode(
+        name,
+        contact,
+        email
+      );
+    :}
+;
+
+/* ========= CONTEXT ========= */
+
+context ::=
+    CONTEXT
+    LBRACE
+      SUMMARY STRING:summary
+    RBRACE
+    {:
+      RESULT = new ContextNode(summary);
+    :}
+;
+
+/* ========= OBJECTIVES ========= */
+
+objectives ::=
+    OBJECTIVES
+    LBRACE
+      GENERAL STRING:general
+      specific_list:specs
+    RBRACE
+    {:
+      RESULT = new ObjectivesNode(
+        general, // objetivo general
+        specs    // lista de específicos
+      );
+    :}
+;
+
+/* Lista de objetivos específicos */
+specific_list ::=
+    specific_list:prev SPECIFIC STRING:s
+    {:
+      prev.add(s);
+      RESULT = prev;
+    :}
+  | SPECIFIC STRING:s
+    {:
+      ArrayList<String> list = new ArrayList<>();
+      list.add(s);
+      RESULT = list;
+    :}
+;
+
+/* ========= SCOPE ========= */
+
+scope ::=
+    SCOPE
+    LBRACE
+      include_list:incs
+      exclude_list:exs
+    RBRACE
+    {:
+      RESULT = new ScopeNode(
+        incs,
+        exs
+      );
+    :}
+;
+
+/* Lista de includes */
+include_list ::=
+    include_list:prev INCLUDE STRING:item
+    {:
+      prev.add(item);
+      RESULT = prev;
+    :}
+  | INCLUDE STRING:item
+    {:
+      ArrayList<String> list = new ArrayList<>();
+      list.add(item);
+      RESULT = list;
+    :}
+;
+
+/* Lista de excludes */
+exclude_list ::=
+    exclude_list:prev EXCLUDE STRING:item
+    {:
+      prev.add(item);
+      RESULT = prev;
+    :}
+  | EXCLUDE STRING:item
+    {:
+      ArrayList<String> list = new ArrayList<>();
+      list.add(item);
+      RESULT = list;
+    :}
+;
+
+/* ========= SCHEDULE ========= */
+
+schedule ::=
+    SCHEDULE
+    LBRACE
+      phase_list:phases
+    RBRACE
+    {:
+      RESULT = new ScheduleNode(phases);
+    :}
+;
+
+/* Lista de fases */
+phase_list ::=
+    phase_list:prev PHASE STRING:pname START STRING:start END STRING:end
+    {:
+      PhaseNode p = new PhaseNode(pname, start, end);
+      prev.add(p);
+      RESULT = prev;
+    :}
+  | PHASE STRING:pname START STRING:start END STRING:end
+    {:
+      ArrayList<PhaseNode> list = new ArrayList<>();
+      list.add(new PhaseNode(pname, start, end));
+      RESULT = list;
+    :}
+;
+
+/* ========= TEAM ========= */
+
+team ::=
+    TEAM
+    LBRACE
+      role_list:roles
+    RBRACE
+    {:
+      RESULT = new TeamNode(roles);
+    :}
+;
+
+/* Lista de roles */
+role_list ::=
+    role_list:prev ROLE STRING:role STRING:person
+    {:
+      RoleNode r = new RoleNode(role, person);
+      prev.add(r);
+      RESULT = prev;
+    :}
+  | ROLE STRING:role STRING:person
+    {:
+      ArrayList<RoleNode> list = new ArrayList<>();
+      list.add(new RoleNode(role, person));
+      RESULT = list;
+    :}
+;
+
+/* ========= RISKS ========= */
+
+risks ::=
+    RISKS
+    LBRACE
+      risk_list:risks_list
+    RBRACE
+    {:
+      RESULT = new RisksNode(risks_list);
+    :}
+;
+
+/* Lista de riesgos */
+risk_list ::=
+    risk_list:prev RISK STRING:desc LEVEL risk_level:lvl MITIGATION STRING:mit
+    {:
+      RiskNode r = new RiskNode(desc, lvl, mit);
+      prev.add(r);
+      RESULT = prev;
+    :}
+  | RISK STRING:desc LEVEL risk_level:lvl MITIGATION STRING:mit
+    {:
+      ArrayList<RiskNode> list = new ArrayList<>();
+      list.add(new RiskNode(desc, lvl, mit));
+      RESULT = list;
+    :}
+;
+
+/* Nivel de riesgo */
+risk_level ::=
+    HIGH   {: RESULT = "high";   :}
+  | MEDIUM {: RESULT = "medium"; :}
+  | LOW    {: RESULT = "low";    :}
+;
+
+/* ========= BUDGET ========= */
+
+budget ::=
+    BUDGET
+    LBRACE
+      CURRENCY STRING:currency
+      budget_item_list:items
+    RBRACE
+    {:
+      RESULT = new BudgetNode(currency, items);
+    :}
+;
+
+/* Lista de ítems */
+budget_item_list ::=
+    budget_item_list:prev ITEM STRING:name COST NUMBER:cost
+    {:
+      BudgetItemNode item = new BudgetItemNode(name, cost);
+      prev.add(item);
+      RESULT = prev;
+    :}
+  | ITEM STRING:name COST NUMBER:cost
+    {:
+      ArrayList<BudgetItemNode> list = new ArrayList<>();
+      list.add(new BudgetItemNode(name, cost));
+      RESULT = list;
+    :}
+;
+
+/* ========= STATUS ========= */
+
+status ::=
+    STATUS
+    LBRACE
+      OVERALL  STRING:overall
+      HEALTH   STRING:health
+      COMMENTS STRING:comments
+    RBRACE
+    {:
+      RESULT = new StatusNode(
+        overall,
+        health,
+        comments
+      );
+    :}
+;
+
+/* ========= APPROVALS ========= */
+
+approvals ::=
+    APPROVALS
+    LBRACE
+      REQUIRED_BY STRING:required
+      approver_list:approvers
+    RBRACE
+    {:
+      RESULT = new ApprovalsNode(required, approvers);
+    :}
+;
+
+/* Lista de aprobadores */
+approver_list ::=
+    approver_list:prev APPROVER STRING:name STRING:role
+    {:
+      ApproverNode a = new ApproverNode(name, role);
+      prev.add(a);
+      RESULT = prev;
+    :}
+  | APPROVER STRING:name STRING:role
+    {:
+      ArrayList<ApproverNode> list = new ArrayList<>();
+      list.add(new ApproverNode(name, role));
+      RESULT = list;
+    :}
+;
