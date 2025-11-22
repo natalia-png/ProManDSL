@@ -88,8 +88,7 @@ approvals
 required_by
 approver
 
-markdown
-Copiar código
+
 
 ### ● B. Identificadores (`Ident`)
 Valores definidos por el usuario **sin comillas**, usados para:
@@ -161,8 +160,7 @@ Status
 Approvals
 "}" _
 
-java
-Copiar código
+
 
 Producción interna (ejemplo):
 
@@ -174,8 +172,6 @@ Metadata =
 "prepared_by" _ preparedBy:Ident _
 "}" _
 
-markdown
-Copiar código
 
 ---
 
@@ -281,8 +277,7 @@ Incluye:
 cd Ohm-Implementation
 node src/main.js ../Java-Implementation/src/proyecto1.proj
 
-shell
-Copiar código
+
 
 ### ✔ Java (JFlex + CUP)
 cd Java-Implementation
